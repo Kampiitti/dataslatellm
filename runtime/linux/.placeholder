@@ -1,0 +1,6 @@
+Place the Linux llama-server binary here.
+
+Download from: https://github.com/ggerganov/llama.cpp/releases
+File: llama-*-linux-x64.zip
+
+Extract and copy llama-server to this directory.

@@ -1,0 +1,6 @@
+Place the Windows llama-server.exe binary here.
+
+Download from: https://github.com/ggerganov/llama.cpp/releases
+File: llama-*-windows-x64.zip
+
+Extract and copy llama-server.exe to this directory.

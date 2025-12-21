@@ -1,0 +1,8 @@
+Place the macOS llama-server binary here.
+
+Download from: https://github.com/ggerganov/llama.cpp/releases
+Files: 
+- llama-*-macos-arm64.zip (for M1/M2/M3)
+- llama-*-macos-x64.zip (for Intel)
+
+Extract and copy llama-server to this directory.

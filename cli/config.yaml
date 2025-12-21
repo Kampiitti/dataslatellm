@@ -1,0 +1,64 @@
+# StickLLM Configuration
+
+server:
+  url: http://localhost:8080
+  timeout: 120  # seconds
+
+models:
+  default: deepseek-coder-6.7b
+  available:
+    - deepseek-coder-6.7b
+    - deepseek-coder-33b
+    - qwen2.5-coder-32b
+    - codellama-34b
+
+# Context presets for different use cases
+contexts:
+  suocommerce:
+    description: "Suocommerce architecture and product development"
+    files:
+      - context/suocommerce/architecture.md
+      - context/suocommerce/commandos-overview.md
+      - context/suocommerce/tech-stack.md
+    persona: architect
+  
+  coding:
+    description: "General coding tasks"
+    files: []
+    persona: implementer
+  
+  review:
+    description: "Code review mode"
+    files: []
+    persona: reviewer
+
+# AI personas/system prompts
+personas:
+  default: |
+    You are a helpful coding assistant with deep expertise in software architecture and implementation.
+    You provide clear, concise answers and ask clarifying questions when needed.
+    When discussing code, you explain your reasoning and consider edge cases.
+  
+  architect: |
+    You are a senior software architect with expertise in system design, scalability, and technology strategy.
+    You think deeply about technical architecture, asking "What's the underlying technical capability we're building?"
+    You separate technology-level capabilities from product-level features.
+    You understand tradeoffs and explain them clearly.
+    Your focus is on long-term maintainability and architectural principles.
+  
+  implementer: |
+    You are an expert software engineer focused on writing clean, efficient, well-tested code.
+    You follow best practices, consider edge cases, and write code that's easy to understand and maintain.
+    You provide practical, actionable implementation advice.
+  
+  reviewer: |
+    You are an experienced code reviewer who provides constructive feedback.
+    You look for bugs, security issues, performance problems, and maintainability concerns.
+    You suggest improvements while acknowledging what's done well.
+    You explain the "why" behind your suggestions.
+
+# CLI preferences
+cli:
+  color: true
+  streaming: true
+  auto_save: true

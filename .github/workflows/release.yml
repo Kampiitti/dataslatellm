@@ -1,0 +1,92 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # Trigger on version tags like v1.0.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Get version from tag
+      id: get_version
+      run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+    
+    - name: Create release archives
+      run: |
+        # Create tar.gz
+        tar -czf stickllm-${{ steps.get_version.outputs.VERSION }}.tar.gz \
+          --exclude='.git*' \
+          --exclude='*.pyc' \
+          --exclude='__pycache__' \
+          --exclude='chats/sessions.db' \
+          --exclude='models/*.gguf' \
+          --exclude='runtime/*/llama-server*' \
+          .
+        
+        # Create zip
+        zip -r stickllm-${{ steps.get_version.outputs.VERSION }}.zip . \
+          -x '*.git*' \
+          -x '*.pyc' \
+          -x '__pycache__/*' \
+          -x 'chats/sessions.db' \
+          -x 'models/*.gguf' \
+          -x 'runtime/*/llama-server*'
+    
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: StickLLM ${{ steps.get_version.outputs.VERSION }}
+        body: |
+          # StickLLM ${{ steps.get_version.outputs.VERSION }}
+          
+          Portable AI coding assistant for your USB drive.
+          
+          ## Installation
+          
+          1. Download archive (tar.gz for Linux/Mac, zip for Windows)
+          2. Extract to USB drive
+          3. Run setup script (`./setup.sh` or `setup.bat`)
+          4. Start using (`./launch.sh` or `launch.bat`)
+          
+          ## What's New
+          
+          See [CHANGELOG.md](CHANGELOG.md) for details.
+          
+          ## Requirements
+          
+          - USB drive (1TB recommended)
+          - Python 3.8+
+          - 8GB+ RAM (16GB+ for larger models)
+          
+          **Note**: Models and llama.cpp binaries must be downloaded separately using the setup script.
+        draft: false
+        prerelease: false
+    
+    - name: Upload tar.gz
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./stickllm-${{ steps.get_version.outputs.VERSION }}.tar.gz
+        asset_name: stickllm-${{ steps.get_version.outputs.VERSION }}.tar.gz
+        asset_content_type: application/gzip
+    
+    - name: Upload zip
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./stickllm-${{ steps.get_version.outputs.VERSION }}.zip
+        asset_name: stickllm-${{ steps.get_version.outputs.VERSION }}.zip
+        asset_content_type: application/zip

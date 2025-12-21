@@ -1,0 +1,53 @@
+# Large model files (downloaded separately)
+models/*.gguf
+*.gguf
+
+# Runtime binaries (downloaded separately)
+runtime/*/llama-server
+runtime/*/llama-server.exe
+runtime/*/*.dylib
+runtime/*/*.so
+runtime/*/*.dll
+
+# User data (private)
+chats/
+*.db
+*.db-journal
+
+# Logs
+*.log
+server.log
+*.pid
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
